@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brewly | Artisan Coffee & Bakery</title>
+    <meta name="description" content="Brewly - Experience the finest artisan coffee and pastries. Modern atmosphere, premium beans, and a taste of perfection in every cup.">
+    <meta name="keywords" content="coffee, cafe, artisan, bakery, espresso, brewly, modern cafe">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        coffee: {
+                            900: '#2C1A1D', // Dark Espresso
+                            800: '#4A3B32',
+                            600: '#8C6B5D',
+                            400: '#D4A373', // Gold/Caramel
+                            100: '#F4E4C1', // Crema
+                            50: '#FAF9F6',  // Off White
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom CSS for advanced effects */
+        body {
+            background-color: #FAF9F6;
+            color: #2C1A1D;
+            cursor: none; /* Hiding default cursor for custom one */
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #2C1A1D;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #2C1A1D;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        body.hovering .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(212, 163, 115, 0.2);
+            border-color: transparent;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2C1A1D;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #F4E4C1;
+        }
+
+        /* Text Reveal Animation Helper */
+        .char-reveal {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        
+        /* Smooth Scroll styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4E4C1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2C1A1D;
+            border-radius: 4px;
+        }
+
+        /* Image Hover Zoom */
+        .img-container {
+            overflow: hidden;
+        }
+        .img-container img {
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .img-container:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Zig Zag Section Styling */
+        .process-step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="text-center">
+            <h1 class="text-6xl font-serif font-bold tracking-widest mb-4 overflow-hidden">
+                <span class="inline-block translate-y-full preloader-text">BREWLY</span>
+            </h1>
+            <p class="text-coffee-400 font-sans tracking-[0.3em] overflow-hidden">
+                <span class="inline-block translate-y-full preloader-sub">EST. 2024</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 px-6 py-6 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-serif font-bold text-coffee-900 hover-trigger relative z-50">
+                Brewly<span class="text-coffee-400">.</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-12">
+                <a href="#home" class="text-coffee-900 font-medium hover:text-coffee-400 transition-colors hover-trigger">Home</a>
+                <a href="#about" class="text-coffee-900 font-medium hover:text-coffee-400 transition-colors hover-trigger">About</a>
+                <a href="#process" class="text-coffee-900 font-medium hover:text-coffee-400 transition-colors hover-trigger">Process</a>
+                <a href="#menu" class="text-coffee-900 font-medium hover:text-coffee-400 transition-colors hover-trigger">Menu</a>
+                <a href="#contact" class="text-coffee-900 font-medium hover:text-coffee-400 transition-colors hover-trigger">Contact</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-coffee-900 text-2xl hover-trigger z-50" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-coffee-900 text-coffee-100 transform translate-x-full transition-transform duration-500 flex flex-col justify-center items-center space-y-8 z-40">
+            <a href="#home" class="text-4xl font-serif mobile-link">Home</a>
+            <a href="#about" class="text-4xl font-serif mobile-link">About</a>
+            <a href="#process" class="text-4xl font-serif mobile-link">Process</a>
+            <a href="#menu" class="text-4xl font-serif mobile-link">Menu</a>
+            <a href="#contact" class="text-4xl font-serif mobile-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Abstract Background Shapes -->
+        <div class="absolute inset-0 z-0 opacity-10">
+            <div class="absolute top-10 left-10 w-64 h-64 bg-coffee-400 rounded-full blur-3xl mix-blend-multiply animate-blob"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-coffee-600 rounded-full blur-3xl mix-blend-multiply animate-blob animation-delay-2000"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div class="order-2 md:order-1 hero-content">
+                <h2 class="text-coffee-400 font-bold tracking-widest mb-4 uppercase text-sm reveal-text">The Art of Coffee</h2>
+                <h1 class="text-5xl md:text-7xl font-serif font-bold text-coffee-900 leading-tight mb-6">
+                    <div class="overflow-hidden"><span class="block reveal-heading">Sip the</span></div>
+                    <div class="overflow-hidden"><span class="block reveal-heading italic text-coffee-600">Extraordinary</span></div>
+                    <div class="overflow-hidden"><span class="block reveal-heading">Every Day.</span></div>
+                </h1>
+                <p class="text-gray-600 text-lg mb-8 max-w-md reveal-text">
+                    Experience the perfect blend of ethically sourced beans and artisanal roasting. Welcome to Brewly, where every cup tells a story.
+                </p>
+                <div class="reveal-btn opacity-0 translate-y-4">
+                    <a href="#menu" class="inline-block bg-coffee-900 text-coffee-50 px-8 py-4 rounded-full font-semibold hover:bg-coffee-600 transition-colors duration-300 hover-trigger">
+                        Explore Menu
+                    </a>
+                </div>
+            </div>
+            
+            <div class="order-1 md:order-2 relative hero-image-container">
+                <div class="relative z-10 rounded-[100px_0_100px_0] overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Latte Art" class="w-full h-auto object-cover hover-trigger">
+                </div>
+                <!-- Decorative Circle behind image -->
+                <div class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-coffee-400 rounded-full opacity-30 rotating-border"></div>
+            </div>
+        </div>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+            <span class="text-coffee-900 text-xs tracking-widest mb-2">SCROLL</span>
+            <div class="w-px h-12 bg-coffee-900"></div>
+        </div>
+    </header>
+
+    <!-- Marquee Section -->
+    <div class="bg-coffee-900 py-4 overflow-hidden whitespace-nowrap relative z-20">
+        <div class="inline-block animate-marquee">
+            <span class="text-coffee-100 text-4xl font-serif mx-8">FRESH ROAST</span>
+            <span class="text-coffee-400 text-4xl font-serif mx-8">*</span>
+            <span class="text-coffee-100 text-4xl font-serif mx-8">ORGANIC BEANS</span>
+            <span class="text-coffee-400 text-4xl font-serif mx-8">*</span>
+            <span class="text-coffee-100 text-4xl font-serif mx-8">PREMIUM TASTE</span>
+            <span class="text-coffee-400 text-4xl font-serif mx-8">*</span>
+            <span class="text-coffee-100 text-4xl font-serif mx-8">BREWLY SPECIAL</span>
+            <span class="text-coffee-400 text-4xl font-serif mx-8">*</span>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="relative group img-container rounded-lg overflow-hidden shadow-xl about-img-trigger">
+                    <img src="https://images.unsplash.com/photo-1442512595367-4273253af512?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cafe Interior" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-0 transition-all duration-500"></div>
+                </div>
+                
+                <div class="about-text-trigger">
+                    <span class="text-coffee-400 font-bold tracking-widest uppercase text-sm block mb-2">Our Story</span>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-coffee-900 mb-6">Crafting Memories,<br>One Cup at a Time.</h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Founded in 2024, Brewly started with a simple mission: to serve the highest quality coffee in a space that feels like home. We source our beans directly from sustainable farms across the globe.
+                    </p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        Our baristas are artisans, trained in the delicate science of extraction and the art of milk texturing. Whether you need a morning boost or an afternoon escape, we are here for you.
+                    </p>
+                    
+                    <div class="grid grid-cols-3 gap-4 border-t border-gray-200 pt-8">
+                        <div class="text-center">
+                            <h3 class="text-3xl font-serif font-bold text-coffee-600 counter" data-target="15">0</h3>
+                            <p class="text-xs uppercase tracking-widest text-gray-500 mt-1">Varieties</p>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="text-3xl font-serif font-bold text-coffee-600 counter" data-target="1200">0</h3>
+                            <p class="text-xs uppercase tracking-widest text-gray-500 mt-1">Happy Clients</p>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="text-3xl font-serif font-bold text-coffee-600 counter" data-target="8">0</h3>
+                            <p class="text-xs uppercase tracking-widest text-gray-500 mt-1">Awards</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: The Process (Seed to Cup) -->
+    <section id="process" class="py-24 bg-coffee-50 relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <span class="text-coffee-400 font-bold tracking-widest uppercase text-sm">How We Do It</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-coffee-900 mt-2">Seed to Cup Journey</h2>
+            </div>
+
+            <!-- Step 1 -->
+            <div class="flex flex-col md:flex-row items-center gap-12 mb-20 process-step">
+                <div class="w-full md:w-1/2">
+                    <div class="relative rounded-2xl overflow-hidden shadow-xl img-container">
+                        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80" alt="Coffee Cherries" class="w-full h-80 object-cover">
+                        <div class="absolute top-4 left-4 bg-white text-coffee-900 font-serif font-bold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-lg">01</div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 md:pl-10 process-text">
+                    <h3 class="text-3xl font-serif font-bold text-coffee-900 mb-4">Ethical Sourcing</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        We partner directly with farmers in Colombia, Ethiopia, and Sumatra. By cutting out the middleman, we ensure fair wages for the growers and the freshest, highest-grade green beans for our roastery.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex flex-col md:flex-row items-center gap-12 mb-20 process-step">
+                <div class="w-full md:w-1/2">
+                    <div class="relative rounded-2xl overflow-hidden shadow-xl img-container">
+                        <img src="https://images.unsplash.com/photo-1525157989932-d352b57e74cb?auto=format&fit=crop&w=800&q=80" alt="Roasting" class="w-full h-80 object-cover">
+                        <div class="absolute top-4 left-4 bg-white text-coffee-900 font-serif font-bold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-lg">02</div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 md:pr-10 text-right md:text-left process-text">
+                    <h3 class="text-3xl font-serif font-bold text-coffee-900 mb-4">Master Roasting</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Our master roasters meticulously roast small batches daily. Using state-of-the-art technology combined with sensory expertise, we unlock the unique flavor profile hidden within each bean variety.
+                    </p>
+                </div>
+            </div>
+
+             <!-- Step 3 -->
+             <div class="flex flex-col md:flex-row items-center gap-12 process-step">
+                <div class="w-full md:w-1/2">
+                    <div class="relative rounded-2xl overflow-hidden shadow-xl img-container">
+                        <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80" alt="Pour Over" class="w-full h-80 object-cover">
+                        <div class="absolute top-4 left-4 bg-white text-coffee-900 font-serif font-bold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-lg">03</div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 md:pl-10 process-text">
+                    <h3 class="text-3xl font-serif font-bold text-coffee-900 mb-4">Precision Brewing</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        The final step is in the cup. Our baristas weigh every shot and time every pour-over to the second, ensuring that the water temperature and pressure extract only the sweetest notes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-white relative overflow-hidden">
+        <!-- Floating Bean Background -->
+        <i class="fas fa-coffee absolute top-20 left-10 text-9xl text-coffee-100 opacity-50 transform -rotate-12 z-0"></i>
+        <i class="fas fa-mug-hot absolute bottom-20 right-10 text-9xl text-coffee-100 opacity-50 transform rotate-12 z-0"></i>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-coffee-400 font-bold tracking-widest uppercase text-sm">Selection</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-coffee-900 mt-2">Our Signature Menu</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Item 1 -->
+                <div class="bg-coffee-50 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 menu-card hover-trigger group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-coffee-100">
+                            <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=150&q=80" alt="Espresso" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold text-coffee-600">$4.50</span>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-coffee-900 mb-2 group-hover:text-coffee-400 transition-colors">Classic Espresso</h3>
+                    <p class="text-gray-500 text-sm">Rich, intense, and aromatic. A pure shot of energy extracted from 100% Arabica beans.</p>
+                </div>
+
+                <!-- Menu Item 2 -->
+                <div class="bg-coffee-50 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 menu-card hover-trigger group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-coffee-100">
+                            <img src="https://images.unsplash.com/photo-1517701604599-bb29b5c73311?auto=format&fit=crop&w=150&q=80" alt="Latte" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold text-coffee-600">$5.50</span>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-coffee-900 mb-2 group-hover:text-coffee-400 transition-colors">Hazelnut Latte</h3>
+                    <p class="text-gray-500 text-sm">Smooth steamed milk poured over espresso with a hint of roasted hazelnut syrup.</p>
+                </div>
+
+                <!-- Menu Item 3 -->
+                <div class="bg-coffee-50 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 menu-card hover-trigger group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-coffee-100">
+                            <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=150&q=80" alt="Cappuccino" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold text-coffee-600">$5.00</span>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-coffee-900 mb-2 group-hover:text-coffee-400 transition-colors">Creamy Cappuccino</h3>
+                    <p class="text-gray-500 text-sm">Equal parts espresso, steamed milk, and milk foam. Finished with cocoa powder.</p>
+                </div>
+
+                <!-- Menu Item 4 -->
+                <div class="bg-coffee-50 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 menu-card hover-trigger group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-coffee-100">
+                            <img src="https://images.unsplash.com/photo-1559586616-361e18714958?auto=format&fit=crop&w=150&q=80" alt="Croissant" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold text-coffee-600">$3.50</span>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-coffee-900 mb-2 group-hover:text-coffee-400 transition-colors">Butter Croissant</h3>
+                    <p class="text-gray-500 text-sm">Flaky, golden, and freshly baked every morning. The perfect companion to your coffee.</p>
+                </div>
+
+                <!-- Menu Item 5 -->
+                <div class="bg-coffee-50 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 menu-card hover-trigger group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-coffee-100">
+                            <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=150&q=80" alt="Cold Brew" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold text-coffee-600">$6.00</span>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-coffee-900 mb-2 group-hover:text-coffee-400 transition-colors">Nitro Cold Brew</h3>
+                    <p class="text-gray-500 text-sm">Steeped for 24 hours and infused with nitrogen for a creamy, stout-like texture.</p>
+                </div>
+
+                 <!-- Menu Item 6 -->
+                 <div class="bg-coffee-50 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 menu-card hover-trigger group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-coffee-100">
+                            <img src="https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?auto=format&fit=crop&w=150&q=80" alt="Avocado Toast" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold text-coffee-600">$8.50</span>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-coffee-900 mb-2 group-hover:text-coffee-400 transition-colors">Avo Smash Toast</h3>
+                    <p class="text-gray-500 text-sm">Sourdough bread topped with seasoned avocado, poached egg, and chili flakes.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button onclick="document.getElementById('modal').classList.remove('hidden')" class="border-2 border-coffee-900 text-coffee-900 px-8 py-3 rounded-full font-semibold hover:bg-coffee-900 hover:text-white transition-all duration-300 hover-trigger">
+                    View Full Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Meet the Artisans -->
+    <section id="team" class="py-24 bg-coffee-900 text-coffee-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-coffee-400 font-bold tracking-widest uppercase text-sm">The People</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mt-2">Meet the Artisans</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Team Member 1 -->
+                <div class="text-center group team-card hover-trigger">
+                    <div class="relative w-64 h-64 mx-auto mb-6 rounded-full overflow-hidden border-4 border-coffee-600">
+                        <img src="https://images.unsplash.com/photo-1583336130417-3346a1be7dee?auto=format&fit=crop&w=400&q=80" alt="Barista" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-white">James Carter</h3>
+                    <p class="text-coffee-400 uppercase text-xs tracking-widest mt-1">Head Roaster</p>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="text-center group team-card hover-trigger">
+                    <div class="relative w-64 h-64 mx-auto mb-6 rounded-full overflow-hidden border-4 border-coffee-600">
+                        <img src="https://images.unsplash.com/photo-1542596594-649edbc13630?auto=format&fit=crop&w=400&q=80" alt="Barista" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-white">Sarah Jenkins</h3>
+                    <p class="text-coffee-400 uppercase text-xs tracking-widest mt-1">Lead Barista</p>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="text-center group team-card hover-trigger">
+                    <div class="relative w-64 h-64 mx-auto mb-6 rounded-full overflow-hidden border-4 border-coffee-600">
+                        <img src="https://images.unsplash.com/photo-1512484457149-266d165a4eca?auto=format&fit=crop&w=400&q=80" alt="Chef" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-white">Michael Chen</h3>
+                    <p class="text-coffee-400 uppercase text-xs tracking-widest mt-1">Pastry Chef</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Image Section -->
+    <section class="h-[60vh] relative flex items-center justify-center bg-fixed bg-center bg-cover" style="background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative z-10 text-center px-6">
+            <h2 class="text-4xl md:text-6xl font-serif font-bold text-white mb-6">Experience the Vibe</h2>
+            <p class="text-coffee-100 text-xl max-w-2xl mx-auto">Relax, work, or catch up with friends in our modern, cozy atmosphere designed for comfort.</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section (Grid) -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
+                <div class="col-span-2 row-span-2 overflow-hidden rounded-lg img-container hover-trigger relative group">
+                    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Gallery 1">
+                    <div class="absolute inset-0 bg-coffee-900 bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
+                        <i class="fab fa-instagram text-white text-3xl opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"></i>
+                    </div>
+                </div>
+                <div class="col-span-1 row-span-1 overflow-hidden rounded-lg img-container hover-trigger relative group">
+                    <img src="https://images.unsplash.com/photo-1498804103079-a6351b050096?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover" alt="Gallery 2">
+                </div>
+                <div class="col-span-1 row-span-1 overflow-hidden rounded-lg img-container hover-trigger relative group">
+                    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover" alt="Gallery 3">
+                </div>
+                <div class="col-span-1 row-span-1 overflow-hidden rounded-lg img-container hover-trigger relative group">
+                    <img src="https://images.unsplash.com/photo-1511537632536-b7a575808d1c?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover" alt="Gallery 4">
+                </div>
+                <div class="col-span-1 row-span-1 overflow-hidden rounded-lg img-container hover-trigger relative group">
+                    <img src="https://images.unsplash.com/photo-1453614512568-c4029d137f43?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover" alt="Gallery 5">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Testimonials -->
+    <section id="testimonials" class="py-24 bg-coffee-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <i class="fas fa-quote-left text-4xl text-coffee-400 mb-6"></i>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-coffee-900">What Our Community Says</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-md review-card">
+                    <div class="flex text-coffee-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"The nitro cold brew here is life-changing. I come here every morning to work, and the vibe is just unmatched."</p>
+                    <div class="font-bold text-coffee-900">- Alex Morgan</div>
+                </div>
+                 <!-- Review 2 -->
+                 <div class="bg-white p-8 rounded-xl shadow-md review-card">
+                    <div class="flex text-coffee-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"Finally, a place that takes pastry as seriously as they take coffee. The croissants are authentically French."</p>
+                    <div class="font-bold text-coffee-900">- Sophia Lee</div>
+                </div>
+                 <!-- Review 3 -->
+                 <div class="bg-white p-8 rounded-xl shadow-md review-card">
+                    <div class="flex text-coffee-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"The team at Brewly makes you feel like family. Ethical sourcing is a big plus for me, too. Highly recommended!"</p>
+                    <div class="font-bold text-coffee-900">- David Wright</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Newsletter -->
+    <section class="py-20 bg-coffee-900 relative overflow-hidden">
+        <div class="absolute inset-0 z-0">
+             <div class="absolute top-0 right-0 w-96 h-96 bg-coffee-600 rounded-full blur-3xl opacity-20 mix-blend-screen animate-blob"></div>
+             <div class="absolute bottom-0 left-0 w-64 h-64 bg-coffee-400 rounded-full blur-3xl opacity-20 mix-blend-screen animate-blob animation-delay-2000"></div>
+        </div>
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <h2 class="text-3xl md:text-5xl font-serif font-bold text-white mb-4">Join the Brewly Club</h2>
+            <p class="text-coffee-100 mb-8 max-w-lg mx-auto">Subscribe for exclusive offers, brewing tips, and early access to our limited-edition roasts.</p>
+            <form class="max-w-md mx-auto flex gap-2" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+                <input type="email" placeholder="Your email address" class="flex-1 px-6 py-3 rounded-full bg-coffee-800 text-white placeholder-coffee-400 border border-coffee-600 focus:outline-none focus:border-coffee-400 transition-colors">
+                <button type="submit" class="bg-coffee-400 text-coffee-900 px-8 py-3 rounded-full font-bold hover:bg-white transition-colors hover-trigger">Join</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-coffee-900 text-white pt-20 pb-10 border-t border-coffee-800">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <h2 class="text-3xl font-serif font-bold mb-6">Brewly.</h2>
+                    <p class="text-coffee-100 text-sm leading-relaxed mb-6">
+                        Bringing the finest coffee experience to your neighborhood. Freshly roasted, served with love.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-coffee-800 flex items-center justify-center hover:bg-coffee-400 transition-colors hover-trigger"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-coffee-800 flex items-center justify-center hover:bg-coffee-400 transition-colors hover-trigger"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-coffee-800 flex items-center justify-center hover:bg-coffee-400 transition-colors hover-trigger"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-6 text-coffee-400">Quick Links</h3>
+                    <ul class="space-y-3 text-coffee-100">
+                        <li><a href="#home" class="hover:text-white transition-colors hover-trigger">Home</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors hover-trigger">About Us</a></li>
+                        <li><a href="#menu" class="hover:text-white transition-colors hover-trigger">Menu</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors hover-trigger">Reservation</a></li>
+                    </ul>
+                </div>
+
+                <!-- Hours -->
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-6 text-coffee-400">Opening Hours</h3>
+                    <ul class="space-y-3 text-coffee-100">
+                        <li class="flex justify-between"><span>Mon - Fri:</span> <span>07:00 - 20:00</span></li>
+                        <li class="flex justify-between"><span>Saturday:</span> <span>08:00 - 22:00</span></li>
+                        <li class="flex justify-between"><span>Sunday:</span> <span>08:00 - 18:00</span></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-6 text-coffee-400">Contact Us</h3>
+                    <ul class="space-y-3 text-coffee-100">
+                        <li class="flex items-start"><i class="fas fa-map-marker-alt mt-1 mr-3 text-coffee-400"></i> 123 Artisan Ave, Coffee City, 90210</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-3 text-coffee-400"></i> +1 (555) 123-4567</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-3 text-coffee-400"></i> hello@brewly.com</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Separator -->
+            <div class="border-t border-coffee-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-coffee-100 text-sm mb-4 md:mb-0">&copy; 2024 Brewly. All rights reserved.</p>
+                
+                <!-- CREDIT SECTION AS REQUESTED -->
+                <div class="text-sm font-semibold tracking-wider">
+                    <span class="text-coffee-400">Design and Develop by</span> 
+                    <span class="text-white border-b-2 border-coffee-400 pb-0.5 ml-1">Team Texnox</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Simple Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full relative animate-blob">
+            <button onclick="document.getElementById('modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-black">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <h3 class="text-2xl font-serif font-bold text-coffee-900 mb-4">Full Menu Coming Soon</h3>
+            <p class="text-gray-600 mb-6">We are currently updating our seasonal menu. Please check back later or visit us in store!</p>
+            <button onclick="document.getElementById('modal').classList.add('hidden')" class="w-full bg-coffee-900 text-white py-3 rounded-lg hover:bg-coffee-800 transition-colors">Close</button>
+        </div>
+    </div>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        // Wait for DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // --- Preloader Animation ---
+            const tl = gsap.timeline();
+
+            tl.to('.preloader-text', {
+                y: 0,
+                duration: 1,
+                ease: 'power4.out',
+                delay: 0.2
+            })
+            .to('.preloader-sub', {
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out'
+            }, '-=0.5')
+            .to('#preloader', {
+                y: '-100%',
+                duration: 1,
+                ease: 'power4.inOut',
+                delay: 0.5
+            })
+            .from('.reveal-heading', {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: 'power4.out'
+            }, '-=0.5')
+            .from('.hero-image-container', {
+                scale: 0.8,
+                opacity: 0,
+                duration: 1.5,
+                ease: 'power2.out'
+            }, '-=1')
+            .from('.reveal-text', {
+                y: 20,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out'
+            }, '-=0.5')
+            .to('.reveal-btn', {
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                ease: 'back.out(1.7)'
+            }, '-=0.3');
+
+            // --- Custom Cursor Logic ---
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                // Dot follows instantly
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+
+                // Outline follows with lag for fluid effect
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 500, fill: "forwards" });
+            });
+
+            // Hover effects for cursor
+            const hoverTriggers = document.querySelectorAll('.hover-trigger');
+            hoverTriggers.forEach(trigger => {
+                trigger.addEventListener('mouseenter', () => {
+                    document.body.classList.add('hovering');
+                });
+                trigger.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('hovering');
+                });
+            });
+
+            // --- Scroll Animations ---
+
+            // About Section Image Reveal
+            gsap.from('.about-img-trigger', {
+                scrollTrigger: {
+                    trigger: '#about',
+                    start: 'top 70%',
+                    end: 'bottom bottom',
+                    scrub: 1
+                },
+                x: -100,
+                opacity: 0,
+                duration: 1.5
+            });
+
+            // About Text Stagger
+            gsap.from('.about-text-trigger > *', {
+                scrollTrigger: {
+                    trigger: '.about-text-trigger',
+                    start: 'top 80%',
+                },
+                y: 30,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 1
+            });
+
+            // Number Counter Animation
+            gsap.utils.toArray('.counter').forEach(counter => {
+                const target = counter.getAttribute('data-target');
+                ScrollTrigger.create({
+                    trigger: counter,
+                    start: 'top 85%',
+                    once: true,
+                    onEnter: () => {
+                        gsap.to(counter, {
+                            innerHTML: target,
+                            duration: 2,
+                            snap: { innerHTML: 1 },
+                            ease: 'power2.out'
+                        });
+                    }
+                });
+            });
+
+            // Process Section Animation (Zig Zag)
+            gsap.utils.toArray('.process-step').forEach((step, i) => {
+                const isEven = i % 2 === 0;
+                gsap.from(step.querySelector('.img-container'), {
+                    scrollTrigger: {
+                        trigger: step,
+                        start: 'top 80%',
+                    },
+                    x: isEven ? -100 : 100,
+                    opacity: 0,
+                    duration: 1,
+                    ease: 'power2.out'
+                });
+                
+                gsap.from(step.querySelector('.process-text'), {
+                    scrollTrigger: {
+                        trigger: step,
+                        start: 'top 80%',
+                    },
+                    x: isEven ? 50 : -50,
+                    opacity: 0,
+                    duration: 1,
+                    delay: 0.2,
+                    ease: 'power2.out'
+                });
+            });
+
+            // Menu Cards Stagger
+            gsap.from('.menu-card', {
+                scrollTrigger: {
+                    trigger: '#menu',
+                    start: 'top 70%',
+                },
+                y: 50,
+                opacity: 0,
+                stagger: 0.15,
+                duration: 0.8,
+                ease: 'power2.out'
+            });
+
+             // Team Cards Stagger
+             gsap.from('.team-card', {
+                scrollTrigger: {
+                    trigger: '#team',
+                    start: 'top 75%',
+                },
+                y: 50,
+                opacity: 0,
+                stagger: 0.2,
+                duration: 0.8,
+                ease: 'back.out(1.7)'
+            });
+
+            // Review Cards Stagger
+            gsap.from('.review-card', {
+                scrollTrigger: {
+                    trigger: '#testimonials',
+                    start: 'top 80%',
+                },
+                y: 50,
+                opacity: 0,
+                stagger: 0.2,
+                duration: 0.8,
+                ease: 'power2.out'
+            });
+
+            // Navbar Glass Effect on Scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-white', 'bg-opacity-90', 'backdrop-blur-md', 'shadow-md');
+                } else {
+                    navbar.classList.remove('bg-white', 'bg-opacity-90', 'backdrop-blur-md', 'shadow-md');
+                }
+            });
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            let isMenuOpen = false;
+
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) {
+                    mobileMenu.classList.remove('translate-x-full');
+                    gsap.from(mobileLinks, {
+                        x: 50,
+                        opacity: 0,
+                        stagger: 0.1,
+                        delay: 0.3
+                    });
+                } else {
+                    mobileMenu.classList.add('translate-x-full');
+                }
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    isMenuOpen = false;
+                    mobileMenu.classList.add('translate-x-full');
+                });
+            });
+        });
+        
+        // Tailwind animation custom config styles for Marquee
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+            }
+            .animate-marquee {
+                animation: marquee 20s linear infinite;
+            }
+            @keyframes blob {
+                0% { transform: translate(0px, 0px) scale(1); }
+                33% { transform: translate(30px, -50px) scale(1.1); }
+                66% { transform: translate(-20px, 20px) scale(0.9); }
+                100% { transform: translate(0px, 0px) scale(1); }
+            }
+            .animate-blob {
+                animation: blob 7s infinite;
+            }
+            .animation-delay-2000 {
+                animation-delay: 2s;
+            }
+            @keyframes rotate-border {
+                from { transform: translate(-50%, -50%) rotate(0deg); }
+                to { transform: translate(-50%, -50%) rotate(360deg); }
+            }
+            .rotating-border {
+                animation: rotate-border 20s linear infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
